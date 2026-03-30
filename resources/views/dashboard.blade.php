@@ -68,7 +68,7 @@
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center justify-between">
                             <div>
@@ -102,12 +102,26 @@
                             <div>
                                 <h3 class="text-xl font-bold mb-2">Laporan & Statistik</h3>
                                 <p class="text-purple-100 mb-4">Lihat laporan lengkap dan analisis</p>
-                                <a href="#" class="inline-flex items-center px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium">
+                                <a href="{{ route('reports.attendance') }}" class="inline-flex items-center px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium">
                                     <i class="fas fa-arrow-right mr-2"></i>
                                     Lihat Laporan
                                 </a>
                             </div>
                             <i class="fas fa-chart-bar text-4xl text-purple-200"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Monitoring Sistem</h3>
+                                <p class="text-indigo-100 mb-4">Pantau queue, scheduler, dan status sistem</p>
+                                <a href="{{ route('system.monitoring') }}" class="inline-flex items-center px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-medium">
+                                    <i class="fas fa-arrow-right mr-2"></i>
+                                    Monitoring
+                                </a>
+                            </div>
+                            <i class="fas fa-cogs text-4xl text-indigo-200"></i>
                         </div>
                     </div>
                 </div>

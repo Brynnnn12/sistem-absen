@@ -15,6 +15,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(auth()->user()->hasRole('admin'))
+                        <x-nav-link :href="route('reports.attendance')" :active="request()->routeIs('reports.attendance')">
+                            {{ __('Laporan') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('system.monitoring')" :active="request()->routeIs('system.monitoring')">
+                            {{ __('Monitoring') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
+                            {{ __('Karyawan') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

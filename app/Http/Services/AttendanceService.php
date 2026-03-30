@@ -122,4 +122,50 @@ class AttendanceService
     {
         return $this->attendanceRepository->getByEmployeePaginated($employeeId, $perPage);
     }
+
+    public function generateAttendanceReport(string $startDate, string $endDate, ?string $employeeId = null)
+    {
+        // Ambil karyawan aktif, filter berdasarkan employeeId jika disediakan
+        $query = \App\Models\Employee::where('is_active', true)->with('user');
+
+        if ($employeeId) {
+            $query->where('id', $employeeId);
+        }
+
+        $employees = $query->get();
+
+        $reportData = [];
+
+        foreach ($employees as $employee) {
+            // Hitung total hari dalam periode
+            $totalDays = \Carbon\Carbon::parse($startDate)->diffInDays(\Carbon\Carbon::parse($endDate)) + 1;
+
+            // Ambil data absensi karyawan dalam periode
+            $attendances = $this->attendanceRepository->getByEmployeeAndDateRange($employee->id, $startDate, $endDate);
+
+            // Hitung statistik
+            $presentCount = $attendances->where('status', 'present')->count();
+            $lateCount = $attendances->where('status', 'late')->count();
+            $absentCount = $totalDays - $attendances->count();
+
+            // Hitung persentase
+            $presentPercentage = $totalDays > 0 ? round(($presentCount / $totalDays) * 100, 2) : 0;
+            $latePercentage = $totalDays > 0 ? round(($lateCount / $totalDays) * 100, 2) : 0;
+            $absentPercentage = $totalDays > 0 ? round(($absentCount / $totalDays) * 100, 2) : 0;
+
+            $reportData[] = [
+                'employee' => $employee,
+                'total_days' => $totalDays,
+                'present_count' => $presentCount,
+                'late_count' => $lateCount,
+                'absent_count' => $absentCount,
+                'present_percentage' => $presentPercentage,
+                'late_percentage' => $latePercentage,
+                'absent_percentage' => $absentPercentage,
+                'attendances' => $attendances,
+            ];
+        }
+
+        return $reportData;
+    }
 }
