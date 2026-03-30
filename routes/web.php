@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController; // Contoh controller tambahan
+use App\Http\Controllers\AttendanceController; // Tambahkan ini
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,12 +31,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Khusus Admin: Bisa kelola data Employee
         Route::middleware(['role:admin'])->group(function () {
-            // Route::resource('employees', EmployeeController::class);
+            Route::resource('employees', EmployeeController::class);
         });
 
-        // Khusus Karyawan: Hanya bisa lihat data sendiri (misal)
+        // Route attendances untuk admin dan karyawan
+        Route::middleware(['role:admin'])->group(function () {
+            Route::resource('attendances', AttendanceController::class)->except(['index']);
+        });
         Route::middleware(['role:karyawan'])->group(function () {
-            // Route::get('/my-status', [EmployeeController::class, 'showMyStatus'])->name('employee.status');
+            Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+            Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn'])->name('attendances.checkIn');
+            Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut'])->name('attendances.checkOut');
         });
     });
 });

@@ -12,7 +12,7 @@ class StoreAttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,11 @@ class StoreAttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'employee_id' => 'required|exists:employees,id',
+            'date' => 'required|date|unique:attendances,date,NULL,id,employee_id,' . $this->input('employee_id'),
+            'check_in' => 'nullable|date_format:H:i',
+            'check_out' => 'nullable|date_format:H:i|after:check_in',
+            'status' => 'nullable|string|in:present,late,absent',
         ];
     }
 }

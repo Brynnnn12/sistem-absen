@@ -5,13 +5,13 @@
 $user = auth()->user();
 if ($user && $user->hasRole('karyawan')) {
     $menuItems = [
-        ['icon' => 'fa-calendar-check', 'label' => 'Absen', 'path' => '/absen', 'active' => request()->is('absen*')],
+        ['icon' => 'fa-calendar-check', 'label' => 'Absen', 'path' => '/dashboard/attendances', 'active' => request()->is('absen*')],
     ];
 } else {
     $menuItems = [
-        ['icon' => 'fa-users', 'label' => 'Karyawan', 'path' => '/dashboard/karyawan', 'active' => request()->is('karyawan*')],
-        ['icon' => 'fa-calendar-check', 'label' => 'Absen', 'path' => '/dashboard/absen', 'active' => request()->is('absen*')],
-        ['icon' => 'fa-chart-bar', 'label' => 'Laporan', 'path' => '/dashboard/laporan', 'active' => request()->is('laporan*')],
+        ['icon' => 'fa-users', 'label' => 'Karyawan', 'path' => '/dashboard/employees', 'active' => request()->is('karyawan*')],
+        ['icon' => 'fa-calendar-check', 'label' => 'Absen', 'path' => '/dashboard/attendances', 'active' => request()->is('absen*')],
+        ['icon' => 'fa-chart-bar', 'label' => 'Laporan', 'path' => '/dashboard/reports', 'active' => request()->is('laporan*')],
     ];
 }
 @endphp

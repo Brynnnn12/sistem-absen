@@ -13,7 +13,7 @@ class AttendancePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasRole('admin') || $user->hasRole('karyawan');
     }
 
     /**
@@ -21,7 +21,14 @@ class AttendancePolicy
      */
     public function view(User $user, Attendance $attendance): bool
     {
-        return false;
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        // Karyawan hanya bisa lihat absensi sendiri
+        return $user->hasRole('karyawan') &&
+               $user->employee &&
+               $user->employee->id === $attendance->employee_id;
     }
 
     /**
@@ -29,7 +36,7 @@ class AttendancePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasRole('admin') || $user->hasRole('karyawan');
     }
 
     /**
@@ -37,7 +44,14 @@ class AttendancePolicy
      */
     public function update(User $user, Attendance $attendance): bool
     {
-        return false;
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        // Karyawan hanya bisa update absensi sendiri
+        return $user->hasRole('karyawan') &&
+               $user->employee &&
+               $user->employee->id === $attendance->employee_id;
     }
 
     /**
@@ -45,7 +59,14 @@ class AttendancePolicy
      */
     public function delete(User $user, Attendance $attendance): bool
     {
-        return false;
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        // Karyawan hanya bisa hapus absensi sendiri
+        return $user->hasRole('karyawan') &&
+               $user->employee &&
+               $user->employee->id === $attendance->employee_id;
     }
 
     /**
@@ -53,7 +74,7 @@ class AttendancePolicy
      */
     public function restore(User $user, Attendance $attendance): bool
     {
-        return false;
+        return $user->hasRole('admin');
     }
 
     /**
